@@ -1,0 +1,1 @@
+void actualizar_matriz(unsigned char** original,unsigned int M, unsigned int N);

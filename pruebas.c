@@ -1,8 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "pruebas.h"
-
-void actualizar_matriz(unsigned char** original,unsigned int M, unsigned int N);
+#include "life.h"
 
 bool prueba_funcionamiento_general(){
     unsigned char* matriz[5];
