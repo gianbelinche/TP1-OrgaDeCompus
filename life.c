@@ -3,16 +3,20 @@
 #include "life.h"
 
 //calcula la cantidad de vecinos de una celda
-unsigned int vecinos(unsigned char* a, unsigned int i, unsigned int j, unsigned int M, unsigned int N){
+unsigned int vecinos(unsigned char* a, unsigned int x, unsigned int y, unsigned int fila, unsigned int columna){
     unsigned int cant_vecinos = 0;
-    if (a[((i+1)%M)*M + j] == 1) cant_vecinos++;
-    if (a[((i-1)%M)*M + j] == 1) cant_vecinos++;
-    if (a[i * M + ((j+1)%N)] == 1) cant_vecinos++;
-    if (a[i * M + ((j-1)%N)] == 1) cant_vecinos++;
-    if (a[((i+1)%M)*M + ((j+1)%N)] == 1) cant_vecinos++;
-    if (a[((i+1)%M)*M + ((j-1)%N)] == 1) cant_vecinos++; //Se pueden optimizar mas si es necesario, por ahora esta bien asi.
-    if (a[((i-1)%M)*M + ((j+1)%N)] == 1) cant_vecinos++;
-    if (a[((i-1)%M)*M + ((j-1)%N)] == 1) cant_vecinos++;
+    int i = x;
+    int j = y;
+    int M = fila; //Segun el enunciado recibe unsigned int, pero para que esto funcione necesito ints, ya que quiero que si i=0, i-1 = -1, entonces (i-1)%5 = -1
+    int N = columna; //Luego, ((i-1)%5 + 5)%5 = 4, que es el comportamiento deseado. Si fueran unsigned, (i-1)%5 = 0, por lo que no sirve
+    if (a[(( (i+1)%M + M) %M) * N + j] == 1) cant_vecinos++; //maldito c que el operador modulo no funciona como en python, y tengo que hacer este truco
+    if (a[(( (i-1)%M + M) %M) * N + j] == 1) cant_vecinos++;
+    if (a[i * N + ( ((j+1)%N)+ N) %N] == 1) cant_vecinos++;
+    if (a[i * N + ( ((j-1)%N) +N) %N] == 1) cant_vecinos++;
+    if (a[( ((i+1)%M) +M) %M *N + ( ((j+1)%N) +N) %N] == 1) cant_vecinos++;
+    if (a[( ((i+1)%M) +M) %M *N + ( ((j-1)%N) +N) %N] == 1) cant_vecinos++; //Se pueden optimizar mas si es necesario, por ahora esta bien asi.
+    if (a[( ((i-1)%M) +M) %M *N + ( ((j+1)%N) +N) %N] == 1) cant_vecinos++;
+    if (a[( ((i-1)%M) +M) %M *N + ( ((j-1)%N) +N) %N] == 1) cant_vecinos++;
     return cant_vecinos;
 }
 
@@ -21,7 +25,7 @@ char actualizar_celda(unsigned char** a, unsigned int i, unsigned int j, unsigne
     unsigned char a_formato_vector[M*N];
     for (int i = 0; i < M;i++){
         for (int j = 0; j < N; j++){
-            a_formato_vector[i*M+j] = a[i][j];
+            a_formato_vector[i*N+j] = a[i][j];
         }
     }
 
@@ -37,7 +41,7 @@ void actualizar_matriz(unsigned char** original,unsigned int M, unsigned int N){
     }  
     for (int i = 0; i < M ; i++){
         for (int j = 0; j < N; j++){
-            copia[i][j] = actualizar_celda(original,i,j,N,M);
+            copia[i][j] = actualizar_celda(original,i,j,M,N);
         }
     }
     for (int i = 0; i <M;i++){

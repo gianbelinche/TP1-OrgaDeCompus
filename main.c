@@ -2,13 +2,7 @@
 #include "pruebas.h"
 
 int main(int argc, char* argv[]){
-
-    printf("Prueba funcionamiento general: ");
-    if (prueba_funcionamiento_general()) {
-        printf("OK\n");
-    } else {
-        printf("Error\n");
-    }    
+    pruebas();    
     return 1;
 }
 
