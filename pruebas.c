@@ -111,7 +111,7 @@ bool prueba_caso_borde_superior(){
     matriz_correcta[4][1] = 1;
     matriz_correcta[4][2] = 1;
     matriz_correcta[4][3] = 1;
-    
+
     for (int i = 0; i < M ; i++){
         for (int j = 0; j < N; j++){
             if (matriz[i][j] != matriz_correcta[i][j]){
@@ -270,6 +270,47 @@ bool prueba_caso_borde_derecho(){
     }   
     return true;
 }
+
+bool prueba_caso_borde_esquinas(){
+    int M = 7;
+    int N = 10;
+    unsigned char* matriz[M];
+    for (int i = 0; i < M; i++){
+        matriz[i] = malloc(N);
+        memset(matriz[i],0,N);
+    }
+    
+    matriz[0][0] = 1;
+    matriz[0][9] = 1;
+    matriz[6][0] = 1;
+    matriz[6][9] = 1;
+    actualizar_matriz(matriz,M,N);
+    unsigned char* matriz_correcta[M];
+    for (int i = 0; i < M; i++){
+        matriz_correcta[i] = malloc(N);
+        memset(matriz_correcta[i],0,N);
+    }
+    matriz_correcta[0][0] = 1;
+    matriz_correcta[0][9] = 1;
+    matriz_correcta[6][0] = 1;
+    matriz_correcta[6][9] = 1;
+    for (int i = 0; i < M ; i++){
+        for (int j = 0; j < N; j++){
+            if (matriz[i][j] != matriz_correcta[i][j]){
+                for (int i = 0; i < M; i++){
+                    free(matriz[i]);
+                    free(matriz_correcta[i]);
+                }  
+                return false;
+            }
+        }
+    }
+    for (int i = 0; i < M; i++){
+        free(matriz[i]);
+        free(matriz_correcta[i]);
+    }   
+    return true;
+}
 void pruebas(){
 
     printf("Prueba funcionamiento general: ");
@@ -311,5 +352,12 @@ void pruebas(){
     } else {
         printf("Error\n");
     }
+    printf("Prueba caso borde esquinas: ");
+    if (prueba_caso_borde_esquinas()) {
+        printf("OK\n");
+    } else {
+        printf("Error\n");
+    }
+
 
 }
