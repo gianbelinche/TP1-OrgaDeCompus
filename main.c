@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "pruebas.h"
 
 //calcula la cantidad de vecinos de una celda
 unsigned int vecinos(unsigned char* a, unsigned int i, unsigned int j, unsigned int M, unsigned int N){
@@ -47,26 +48,11 @@ void actualizar_matriz(unsigned char** original,unsigned int M, unsigned int N){
 
 int main(int argc, char* argv[]){
 
-    unsigned char* matriz[5];
-    for (int i = 0; i < 5; i++){
-        matriz[i] = malloc(5);
-        memset(matriz[i],0,5);
-    }
-    
-    matriz[1][2] = 1;
-    matriz[2][3] = 1;
-    matriz[3][1] = 1;
-    matriz[3][2] = 1;
-    matriz[3][3] = 1;
-    actualizar_matriz(matriz,5,5); //Aun no probe que funcione, por ahora compila bien
-    for (int i = 0; i < 5 ; i++){
-        for (int j = 0; j < 5; j++){
-            printf("%d",matriz[i][j]);
-        }
-        printf("\n");
-    }
-    for (int i = 0; i < 5; i++){
-        free(matriz[i]);
-    }
+    printf("Prueba funcionamiento general: ");
+    if (prueba_funcionamiento_general()) {
+        printf("OK\n");
+    } else {
+        printf("Error\n");
+    }    
     return 1;
 }
