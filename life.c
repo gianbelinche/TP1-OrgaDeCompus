@@ -34,7 +34,7 @@ En caso de exito devuelve 0.
 */
 static int _inicializar_tablero(life_t *self){
     int estado = EXITO;
-    self->tablero = calloc(self->M, sizeof(char*));
+    self->tablero = calloc(self->M + 1, sizeof(char*));
     if (!self->tablero) return ERROR;
 
     for (int y=0; y<self->M; y++){
@@ -98,13 +98,6 @@ void actualizar_matriz(unsigned char** original, unsigned int M, unsigned int N)
 ///////////////////////Funciones publicas////////////////////
 
 
-/*
-Inicializa la estructura life_t.
-Levanta el tablero de juego desde el archivo de nombre "archivo_entrada".
-En caso de exito devuelve 0 y debera llamarse a life_destruir() para liberar
-los recursos utilizados.
-En caso de fallo devuelve -1 y no sera necesario llamar a life_destruir().
-*/
 int life_crear(life_t *self, 
                const unsigned int M, 
                const unsigned int N, 
@@ -144,13 +137,6 @@ int life_crear(life_t *self,
     return estado;
 }
 
-/*
-Comienza la ejecucion del juego.
-Escribe "iteraciones" iteraciones del juego en "iteraciones" archivos .pbm
-con nombre "prefijo_salida_xxx.pbm".
-En caso de exito devuelve 0.
-En caso de fallo devuelve -1.
-*/
 int life_comenzar(life_t* self){
     int contador_iteraciones = 0;
     int estado = EXITO;
@@ -163,10 +149,6 @@ int life_comenzar(life_t* self){
     return estado;
 }
 
-/*
-Destruye la estructura life_t, liberando los recursos utilizados.
-Esta funcion no falla.
-*/
 void life_destruir(life_t* self){
     creador_archivo_pbm_destruir(&self->creador_pbm);
     _liberar_tablero(self);
