@@ -153,11 +153,14 @@ En caso de fallo devuelve -1.
 */
 int life_comenzar(life_t* self){
     int contador_iteraciones = 0;
+    int estado = EXITO;
     while(contador_iteraciones < self->iteraciones){
-        creador_archivo_pbm_nuevo_archivo(&self->creador_pbm, self->tablero);
+        estado = creador_archivo_pbm_nuevo_archivo(&self->creador_pbm, self->tablero);
+        if (estado == ERROR) break;
         actualizar_matriz(self->tablero, self->M, self->N);
         contador_iteraciones++;
     }
+    return estado;
 }
 
 /*
@@ -166,5 +169,5 @@ Esta funcion no falla.
 */
 void life_destruir(life_t* self){
     creador_archivo_pbm_destruir(&self->creador_pbm);
-    _liberar_tablero(&self);
+    _liberar_tablero(self);
 }

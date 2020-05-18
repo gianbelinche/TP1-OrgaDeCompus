@@ -25,7 +25,7 @@ En caso de exito devuelve 0
 static int _parsear_linea(char* linea, 
                           const unsigned int M, 
                           const unsigned int N, 
-                          char** tablero){
+                          unsigned char** tablero){
 
     char* ptr_x = strtok(linea, DELIMITADOR);
     char* ptr_y = strtok(NULL, DELIMITADOR);
@@ -61,7 +61,7 @@ void parseador_archivo_destruir(parseador_archivo_t *self){
 int parseador_archivo_parsear(parseador_archivo_t *self, 
                               const unsigned int M,
                               const unsigned int N,
-                              char** tablero){
+                              unsigned char** tablero){
     char linea[TAM_BUFFER_LINEA];
     int estado = 0;
     while(fgets(linea, TAM_BUFFER_LINEA, self->archivo) && estado == EXITO){

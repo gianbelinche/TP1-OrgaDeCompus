@@ -1,16 +1,18 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h> //Para usar atoi
 #include "pruebas.h"
 #include "life.h"
 
 #define ERROR -1
 #define EXITO 0
 
-typedef enum POS_ARGUMENTOS {POS_NUM_ITERACIONES = 1,
-                             POS_M,
-                             POS_N,
-                             POS_ARCHIVO_ENTRADA,
-                             POS_PREFIJO_SALIDA = 6};
+enum POS_ARGUMENTOS {POS_NUM_ITERACIONES = 1,
+                     POS_M,
+                     POS_N,
+                     POS_ARCHIVO_ENTRADA,
+                     POS_INDICADOR_PREFIJO_SALIDA,
+                     POS_PREFIJO_SALIDA};
 
 
     //argv[0] es conway
@@ -74,17 +76,19 @@ int main(int argc, char* argv[]){
     } else if (estado == 2/*Cambiar*/)  {
         return EXITO;
     }
-    unsigned int M = atoi(argv[POS_M]);
-    unsigned int N = atoi(argv[POS_N]);
-    unsigned int iteraciones = atoi(argv[POS_NUM_ITERACIONES]);
+    int M = atoi(argv[POS_M]);
+    int N = atoi(argv[POS_N]);
+    int iteraciones = atoi(argv[POS_NUM_ITERACIONES]);
+    char* nombre_archivo = argv[POS_ARCHIVO_ENTRADA];
+    char* prefijo = nombre_archivo;
+    
+    if (M<=0 || N <=0 || iteraciones <= 0) return ERROR;
+    if (argc == 7 /*Se indica outprefix*/){
+        prefijo = argv[POS_PREFIJO_SALIDA];
+    }
 
     life_t juego;
-    estado = life_crear(&juego, 
-                        M, 
-                        N, 
-                        iteraciones, 
-                        atoi(argv[POS_ARCHIVO_ENTRADA]), 
-                        atoi(argv[POS_PREFIJO_SALIDA]));
+    estado = life_crear(&juego, M, N, iteraciones, nombre_archivo, prefijo);
     if (estado == ERROR) return ERROR;
     estado = life_comenzar(&juego);
     life_destruir(&juego);

@@ -18,7 +18,7 @@ La linea es conformada teniendo en cuenta el factor de escala y
 los valores del tablero en la posicion y.
 Esta funcion no falla.
 */
-static void _crear_linea(creador_archivo_pbm_t *self, char **tablero, const unsigned int y){
+static void _crear_linea(creador_archivo_pbm_t *self, unsigned char **tablero, const unsigned int y){
     int cont = 0;
     for (int x=0; x<self->N; x++){
         for (int k=0; k<self->escala; k++){
@@ -114,7 +114,7 @@ void creador_archivo_pbm_destruir(creador_archivo_pbm_t *self){
     }
 }
 
-int creador_archivo_pbm_nuevo_archivo(creador_archivo_pbm_t *self, char** tablero){
+int creador_archivo_pbm_nuevo_archivo(creador_archivo_pbm_t *self, unsigned char** tablero){
     _actualizar_nombre_archivo(self);
     FILE *archivo = fopen(self->nombre_archivo, NUEVO_ARCHIVO_ESCRITURA);
     if (!archivo) return ERROR;

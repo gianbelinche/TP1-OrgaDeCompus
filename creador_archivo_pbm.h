@@ -39,6 +39,6 @@ prefijo_xxx.pbm donde xxx es el numero de archivos creados hasta el momento.
 En caso de fallo devuelve -1.
 En caso de exito devuelve 0.
 */
-int creador_archivo_pbm_nuevo_archivo(creador_archivo_pbm_t *self, char** tablero);
+int creador_archivo_pbm_nuevo_archivo(creador_archivo_pbm_t *self, unsigned char** tablero);
 
 #endif

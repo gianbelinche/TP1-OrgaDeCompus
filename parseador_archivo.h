@@ -34,6 +34,6 @@ los valores de celdas leidos desde el archivo.
 int parseador_archivo_parsear(parseador_archivo_t *self, 
                               const unsigned int M,
                               const unsigned int N,
-                              char** tablero); 
+                              unsigned char** tablero); 
 
 #endif

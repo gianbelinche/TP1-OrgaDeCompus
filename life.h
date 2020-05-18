@@ -3,7 +3,7 @@
 #include "creador_archivo_pbm.h"
 
 typedef struct life{
-    char **tablero;
+    unsigned char **tablero;
     unsigned int M;
     unsigned int N;
     unsigned int iteraciones;
@@ -38,5 +38,8 @@ Destruye la estructura life_t, liberando los recursos utilizados.
 Esta funcion no falla.
 */
 void life_destruir(life_t* self);
+
+
+void actualizar_matriz(unsigned char** original, unsigned int M, unsigned int N);
 
 #endif
