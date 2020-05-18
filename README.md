@@ -12,6 +12,6 @@ ffmpeg -start_number 0 -i salida_%03d.pbm -vcodec mpeg4 salida.avi
 Creamos el video usando ffmpeg con el siguiente comando
 
 ```shell
-ffmpeg -start_number 0 -i glider_%03d.pbm -vcodec mpeg4 glider.avi
+ffmpeg -start_number 0 -i salida_%03d.pbm -vcodec mpeg4 salida.avi
 
 ```
