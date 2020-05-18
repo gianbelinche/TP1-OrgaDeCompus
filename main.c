@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "pruebas.h"
 
 #define ERROR 1
@@ -23,28 +24,28 @@ void imprimir_ayuda() {
 }
 
 void imprimir_version() {
-    printf("conway version "); /*Completar*/
+    printf("conway version\n"); /*Completar*/
 }
 
 int chequear_parametros(int argc, char* argv[]) {
     if (argc == 1) {
-        fprintf(stderr, "Error en la cantidad de parámetros");
+        fprintf(stderr, "Error en la cantidad de parámetros\n");
         return ERROR;
     }
 
-    if (strcmp(argv[1], "-h") || strcmp(argv[1], "--help")) { /*Se podria cambiar por strncmp*/
+    if (!strcmp(argv[1], "-h") || !strcmp(argv[1], "--help")) { /*Se podria cambiar por strncmp*/
         imprimir_ayuda();
         return 2/*cambiar*/;
     }
 
-    if (strcmp(argv[1], "-V" || strcmp(argv[1], "--version")) {
+    if (!strcmp(argv[1], "-V") || !strcmp(argv[1], "--version")) {
         imprimir_version();
         return 2/*cambiar*/;
     }
 
     if ((argc != 5) && (argc != 7)) {
         /*Con "-o outputprefix" son 7, sino 5*/
-        fprintf(stderr, "Error en la cantidad de parámetros");
+        fprintf(stderr, "Error en la cantidad de parámetros\n");
         return ERROR;
     }
 
