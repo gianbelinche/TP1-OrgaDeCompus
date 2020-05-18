@@ -1,9 +1,24 @@
 #include <stdio.h>
 #include <string.h>
 #include "pruebas.h"
+#include "life.h"
 
-#define ERROR 1
+#define ERROR -1
 #define EXITO 0
+
+typedef enum POS_ARGUMENTOS {POS_NUM_ITERACIONES = 1,
+                             POS_M,
+                             POS_N,
+                             POS_ARCHIVO_ENTRADA,
+                             POS_PREFIJO_SALIDA = 6};
+
+
+    //argv[0] es conway
+    //argv[1] es el numero de iteraciones
+    //argv[2] es M
+    //argv[3] es N
+    //argv[4] es inputfile
+    //argv[6] es outputfile
 
 void imprimir_ayuda() {
     printf("Uso:\n");
@@ -59,7 +74,20 @@ int main(int argc, char* argv[]){
     } else if (estado == 2/*Cambiar*/)  {
         return EXITO;
     }
+    unsigned int M = atoi(argv[POS_M]);
+    unsigned int N = atoi(argv[POS_N]);
+    unsigned int iteraciones = atoi(argv[POS_NUM_ITERACIONES]);
 
+    life_t juego;
+    estado = life_crear(&juego, 
+                        M, 
+                        N, 
+                        iteraciones, 
+                        atoi(argv[POS_ARCHIVO_ENTRADA]), 
+                        atoi(argv[POS_PREFIJO_SALIDA]));
+    if (estado == ERROR) return ERROR;
+    estado = life_comenzar(&juego);
+    life_destruir(&juego);
     /*
     ESTO SERIA ASI, Y EL argv[4] ES EL ARCHIVO DE ENTRADA
     PERO PARA TRABAJAR CON ESTO HAY QUE CAMBIAR UN POCO LAS LOGICA
@@ -75,8 +103,8 @@ int main(int argc, char* argv[]){
     //    salida = argv[6];
     //}
     
-    pruebas();    
-    return EXITO;
+    //pruebas();    
+    return estado;
 }
 
 
