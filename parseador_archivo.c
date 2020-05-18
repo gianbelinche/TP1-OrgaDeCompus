@@ -1,6 +1,7 @@
 #include "parseador_archivo.h"
 #include <string.h> //Para strtok
 #include <stdlib.h> //Para atoi
+#include <errno.h>
 #define FORMATO_LECTURA "r"
 #define DELIMITADOR " "
 #define TAM_BUFFER_LINEA 5
@@ -42,7 +43,10 @@ static int _parsear_linea(char* linea,
 
 int parseador_archivo_crear(parseador_archivo_t *self, const char* nombre_archivo){
     self->archivo = fopen(nombre_archivo, FORMATO_LECTURA);
-    if (!self->archivo) return ERROR;
+    if (!self->archivo) {
+        fprintf(stderr, "Error: %s\n", strerror(errno));
+        return ERROR;
+    }
     return EXITO;
 }
 
