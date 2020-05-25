@@ -11,7 +11,7 @@
 .align 2
 
 .globl vecinos
-.ent strlcpy
+.ent vecinos
 
 vecinos:
     /* Actualizo sp */
@@ -71,6 +71,42 @@ der:
     addiu t0,t0,1
 
 siguiente:
+    /* ----Vecino a la izquierda---- */
+
+    /* t3 = vecino_izq_x = x - 1 */
+    lw t3, O_A1(fp)
+    //addiu t3,t3,-1
+
+    /* v0 = N (temporalmente) */
+    lw v0, O_A4(fp)
+    bnez t3,izq
+    nop
+    /* si no se cumple la condicion, vecino_izq_x = N - 1 */
+    addiu t3,v0,zero
+
+izq:
+    addiu t3,t3,-1
+    /* v0 = N * vecino_izq_x */
+    mul v0,t3,v0
+
+    /* v1 = y */
+    lw v1,O_A2(fp)
+    /* v0 = vecino_izq_x * N + y */
+    addu v0,v0,v1
+    /* v1 = adress array */
+    lw v1,O_A0(fp)
+    /* v0 = posicion array vecino */
+    addu v0,v0,v1
+    /* v1 = a[x][y] */
+    lbu v1,0(v0)
+    /* v0 = 1 */
+    li v0,1
+    bne v0,v1,siguiente2
+    nop
+    /* cant_vecinos ++ */
+    addiu t0,t0,1
+
+siguiente2:
 
 
 
@@ -94,4 +130,4 @@ siguiente:
 
     jr ra
 
-.end strlcpy    
+.end vecinos   
