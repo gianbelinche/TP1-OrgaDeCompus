@@ -5,6 +5,7 @@
 #define O_A1 (O_A0 + 4)
 #define O_A2 (O_A1 + 4)
 #define O_A3 (O_A2 + 4)
+#define O_A4 (O_A3 + 4)
 
 .text
 .align 2
@@ -28,6 +29,51 @@ vecinos:
     sw   a3, O_A3(fp)
 
     /* Logica de la funcion */
+
+    /* t0 = cant_vecinos */
+    addiu t0,zero,0
+
+    /* ----Vecino a la derecha---- */
+
+    /* t1 = vecino_der_x = x + 1 */
+    lw t1, O_A1(fp)
+    addiu t1,t1,1
+
+    /* v0 = N (temporalmente) */
+    lw v0, O_A4(fp)
+    sltu v0,t1,v0
+    bnez v0,der
+    nop
+    /* si no se cumple la condicion, vecino_der_x = 0 */
+    addiu t1,zero,0
+
+der:
+    /* v0 = N */
+    lw v0, O_A4(fp)
+    /* v0 = N * vecino_der_x */
+    mul v0,t1,v0
+
+    /* v1 = y */
+    lw v1,O_A2(fp)
+    /* v0 = vecino_der_x * N + y */
+    addu v0,v0,v1
+    /* v1 = adress array */
+    lw v1,O_A0(fp)
+    /* v0 = posicion array vecino */
+    addu v0,v0,v1
+    /* v1 = a[x][y] */
+    lbu v1,0(v0)
+    /* v0 = 1 */
+    li v0,1
+    bne v0,v1,siguiente
+    nop
+    /* cant_vecinos ++ */
+    addiu t0,t0,1
+
+siguiente:
+
+
+
 
 
 
