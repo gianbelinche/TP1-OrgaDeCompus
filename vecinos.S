@@ -199,28 +199,70 @@ siguiente4:
     addiu t0,t0,1
 
 siguiente5:
-        
+    /* ----Vecino abajo izq---- */
+
+    /* v0 = N * vecino_izq_x + vecino_abajo_y */
+    lw v0, O_A4(fp)
+    mul v0,v0,t2
+    addu v0,v0,t3
+
+    /* v1 = adress array */
+    lw v1,O_A0(fp)
+    /* v0 = posicion array vecino */
+    addu v0,v0,v1
+    /* v1 = a[x_vecino_izq][vecino_abajo_y] */
+    lbu v1,0(v0)
+    /* v0 = 1 */
+    li v0,1
+    bne v0,v1,siguiente6
+    nop
+    /* cant_vecinos ++ */
+    addiu t0,t0,1
+
+siguiente6:
+    /* ----Vecino arriba izq---- */
+
+    /* v0 = N * vecino_izq_x + vecino_arriba_y */
+    lw v0, O_A4(fp)
+    mul v0,v0,t2
+    addu v0,v0,t4
+
+    /* v1 = adress array */
+    lw v1,O_A0(fp)
+    /* v0 = posicion array vecino */
+    addu v0,v0,v1
+    /* v1 = a[x_vecino_izq][vecino_abajo_y] */
+    lbu v1,0(v0)
+    /* v0 = 1 */
+    li v0,1
+    bne v0,v1,siguiente7
+    nop
+    /* cant_vecinos ++ */
+    addiu t0,t0,1
+
+siguiente7:
+    /* ----Vecino arriba der---- */
+
+    /* v0 = N * vecino_der_x + vecino_arriba_y */
+    lw v0, O_A4(fp)
+    mul v0,v0,t1
+    addu v0,v0,t4
+
+    /* v1 = adress array */
+    lw v1,O_A0(fp)
+    /* v0 = posicion array vecino */
+    addu v0,v0,v1
+    /* v1 = a[x_vecino_izq][vecino_abajo_y] */
+    lbu v1,0(v0)
+    /* v0 = 1 */
+    li v0,1
+    bne v0,v1,fin
+    nop
+    /* cant_vecinos ++ */
+    addiu t0,t0,1
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+fin:
     /* Restauro gp y fp */
     lw fp, O_FP(sp)
     lw gp, O_GP(sp)
