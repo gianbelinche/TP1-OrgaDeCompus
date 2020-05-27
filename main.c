@@ -3,9 +3,11 @@
 #include <stdlib.h> //Para usar atoi
 #include "pruebas.h"
 #include "life.h"
+#include "version_conway.h"
 
 #define ERROR -1
 #define EXITO 0
+#define TAM_BUFFER_VERSION 64
 
 enum POS_ARGUMENTOS {POS_NUM_ITERACIONES = 1,
                      POS_M,
@@ -34,7 +36,8 @@ void imprimir_ayuda() {
 }
 
 void imprimir_version() {
-    printf("conway version\n"); /*Completar*/
+    char version[TAM_BUFFER_VERSION] = {0};
+    printf("conway version %s\n", obtener_version(version)); /*Completar*/
 }
 
 int chequear_parametros(int argc, char* argv[]) {

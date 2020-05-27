@@ -75,7 +75,7 @@ int creador_archivo_pbm_crear(creador_archivo_pbm_t *self,
     self->N = N;
     self->escala = escala;
     self->contador = 1;
-    unsigned int largo_prefijo = strlen(prefijo);
+    long unsigned int largo_prefijo = strlen(prefijo);
     self->prefijo = calloc(largo_prefijo + 1, sizeof(char));
     if (!self->prefijo) return ERROR;
     memcpy(self->prefijo, prefijo, largo_prefijo);
