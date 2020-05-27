@@ -16,10 +16,10 @@ c: $(CFILES)
 mips: $(MFILES)
 	$(CC) $(CFLAGS) -o $(EXEC_S) $(MFILES)
 
-pruebas_c: $(PCFILES)
+pruebas-c: $(PCFILES)
 	$(CC) $(CFLAGS) -o $(EXEC_P) $(PCFILES)	
 
-pruebas_mips: $(PMFILES)
+pruebas-mips: $(PMFILES)
 	$(CC) $(CFLAGS) -o $(EXEC_P) $(PMFILES)		
 
 clean:
