@@ -361,3 +361,8 @@ void pruebas(){
 
 
 }
+
+int main(){
+    pruebas();
+    return 0;
+}
