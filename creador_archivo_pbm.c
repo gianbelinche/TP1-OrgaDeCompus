@@ -2,14 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+//Valores de retorno
 #define EXITO 0
 #define ERROR -1
-#define ESPACIO_PARA_FORMATO 9 //Fin de cadena + sufijo _000.pbm 
-#define EXTENSION_ARCHIVO ".pbm"
-#define TAM_BUFFER_CONTADOR 3
+//Opcion de apertura
 #define NUEVO_ARCHIVO_ESCRITURA "w"
+//Configuraciones formato pbm
+#define EXTENSION_ARCHIVO ".pbm"
 #define MAGIC_NUMBER "P1\n"
+//Tamanios de buffer
 #define TAM_BUFFER_ANCHO_Y_ALTO 128
+#define TAM_BUFFER_CONTADOR 3
+#define ESPACIO_PARA_FORMATO 9 //Fin de cadena + sufijo _000.pbm 
 
 //////////////Funciones privadas///////////////////
 /*

@@ -4,9 +4,16 @@
 #include "parseador_archivo.h"
 #include "creador_archivo_pbm.h"
 #include "vecinos.h"
+
+//Valores de retorno
 #define EXITO 0
 #define ERROR -1
+//Configuracion de creador_archivo_pbm
 #define ESCALA 16
+//Mensajes
+#define MENSAJE_PROCESANDO_NUEVO_ARCHIVO "Leyendo estado inicial...\n"
+#define MENSAJE_OPERACION_COMPLETADA "Listo\n"
+enum ESTADOS_CELDA {APAGADA, PRENDIDA};
 
 ////////////////Funciones privadas//////////////////////
 
@@ -78,9 +85,9 @@ char actualizar_celda(unsigned char** a, unsigned int i, unsigned int j, unsigne
     }
 
     unsigned int cant_vecinos = vecinos(a_formato_vector,i,j,M,N);
-    if (cant_vecinos == 3 && (!a[i][j])) return 1;
-    if ((cant_vecinos == 2 || cant_vecinos == 3) && a[i][j]) return 1;
-    return 0;
+    if (cant_vecinos == 3 && (!a[i][j])) return PRENDIDA;
+    if ((cant_vecinos == 2 || cant_vecinos == 3) && a[i][j]) return PRENDIDA;
+    return APAGADA;
 }
 void actualizar_matriz(unsigned char** original, unsigned int M, unsigned int N){
     unsigned char copia[M][N];
@@ -118,7 +125,7 @@ int life_crear(life_t *self,
         _liberar_tablero(self);
         return ERROR;
     }
-    printf("Leyendo estado inicial...\n");
+    printf(MENSAJE_PROCESANDO_NUEVO_ARCHIVO);
     estado = parseador_archivo_parsear(&entrada, M, N, self->tablero);
     if (estado == ERROR){
         _liberar_tablero(self);     
@@ -148,7 +155,7 @@ int life_comenzar(life_t* self){
         actualizar_matriz(self->tablero, self->M, self->N);
         contador_iteraciones++;
     }
-    printf("Listo\n");
+    printf(MENSAJE_OPERACION_COMPLETADA);
     return estado;
 }
 

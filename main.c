@@ -5,11 +5,29 @@
 #include "life.h"
 #include "version_conway.h"
 
+//Valores de retorno
 #define ERROR -1
 #define EXITO 0
+#define FINALIZAR 1
+//Tamanios de buffer
 #define TAM_BUFFER_VERSION 64
+//Comandos
+#define COMANDO_AYUDA_1 "-h"
+#define COMANDO_AYUDA_2 "--help"
+#define COMANDO_VERSION_1 "-V"
+#define COMANDO_VERSION_2 "--version"
+//Mensajes de error
+#define MENSAJE_ERROR_PARAMETROS "Error en la cantidad de parámetros\n"
+//Mensaje version
+#define MENSAJE_VERSION "conway version %s\n"
 
-enum POS_ARGUMENTOS {POS_NUM_ITERACIONES = 1,
+enum NUM_PARAMS {MIN_NUM_PARAMS = 2,
+                 NUM_PARAMS_SIN_OUTPREFIX = 5,
+                 NUM_PARAMS_CON_OUTPREFIX = 7};
+
+enum POS_ARGUMENTOS {POS_VERSION = 1,
+                     POS_AYUDA = 1,
+                     POS_NUM_ITERACIONES = 1,
                      POS_M,
                      POS_N,
                      POS_ARCHIVO_ENTRADA,
@@ -37,28 +55,28 @@ void imprimir_ayuda() {
 
 void imprimir_version() {
     char version[TAM_BUFFER_VERSION] = {0};
-    printf("conway version %s\n", obtener_version(version)); /*Completar*/
+    printf(MENSAJE_VERSION, obtener_version(version));
 }
 
 int chequear_parametros(int argc, char* argv[]) {
-    if (argc == 1) {
-        fprintf(stderr, "Error en la cantidad de parámetros\n");
+    if (argc < MIN_NUM_PARAMS) {
+        fprintf(stderr, MENSAJE_ERROR_PARAMETROS);
         return ERROR;
     }
 
-    if (!strcmp(argv[1], "-h") || !strcmp(argv[1], "--help")) { /*Se podria cambiar por strncmp*/
+    if (!strcmp(argv[POS_AYUDA], COMANDO_AYUDA_1) || !strcmp(argv[POS_AYUDA], COMANDO_AYUDA_2)){
         imprimir_ayuda();
-        return 2/*cambiar*/;
+        return FINALIZAR;
     }
 
-    if (!strcmp(argv[1], "-V") || !strcmp(argv[1], "--version")) {
+    if (!strcmp(argv[POS_VERSION], COMANDO_VERSION_1) || !strcmp(argv[POS_VERSION], COMANDO_VERSION_2)){
         imprimir_version();
-        return 2/*cambiar*/;
+        return FINALIZAR;
     }
 
-    if ((argc != 5) && (argc != 7)) {
+    if ((argc != NUM_PARAMS_SIN_OUTPREFIX) && (argc != NUM_PARAMS_CON_OUTPREFIX)){
         /*Con "-o outputprefix" son 7, sino 5*/
-        fprintf(stderr, "Error en la cantidad de parámetros\n");
+        fprintf(stderr, MENSAJE_ERROR_PARAMETROS);
         return ERROR;
     }
 
@@ -67,9 +85,9 @@ int chequear_parametros(int argc, char* argv[]) {
 
 int main(int argc, char* argv[]){
     int estado = chequear_parametros(argc, argv);
-    if (estado == ERROR) {
+    if (estado == ERROR){
         return ERROR;
-    } else if (estado == 2/*Cambiar*/)  {
+    }else if (estado == FINALIZAR){
         return EXITO;
     }
     int M = atoi(argv[POS_M]);
@@ -79,7 +97,7 @@ int main(int argc, char* argv[]){
     char* prefijo = nombre_archivo;
     
     if (M<=0 || N <=0 || iteraciones <= 0) return ERROR;
-    if (argc == 7 /*Se indica outprefix*/){
+    if (argc == NUM_PARAMS_CON_OUTPREFIX){
         prefijo = argv[POS_PREFIJO_SALIDA];
     }
 
