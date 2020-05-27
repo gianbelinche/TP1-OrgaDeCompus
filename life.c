@@ -47,7 +47,7 @@ static int _inicializar_tablero(life_t *self){
 
     for (int y=0; y<self->M; y++){
         self->tablero[y] = calloc(self->N, sizeof(char));
-        if (!self->tablero){
+        if (!self->tablero[y]){
             estado = ERROR;
             break;
         }

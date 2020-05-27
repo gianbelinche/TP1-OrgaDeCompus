@@ -13,7 +13,9 @@
 //Tamanios de buffer
 #define TAM_BUFFER_ANCHO_Y_ALTO 128
 #define TAM_BUFFER_CONTADOR 3
-#define ESPACIO_PARA_FORMATO 9 //Fin de cadena + sufijo _000.pbm 
+#define ESPACIO_PARA_FORMATO 9 //Fin de cadena + sufijo _000.pbm
+
+enum ESTADOS_CELDA {APAGADA = '0', PRENDIDA = '1'};
 
 //////////////Funciones privadas///////////////////
 /*
@@ -27,9 +29,9 @@ static void _crear_linea(creador_archivo_pbm_t *self, unsigned char **tablero, c
     for (int x=0; x<self->N; x++){
         for (int k=0; k<self->escala; k++){
             if (tablero[y][x]){
-                self->linea[cont] = '1';
+                self->linea[cont] = APAGADA;
             }else{
-                self->linea[cont] = '0';
+                self->linea[cont] = PRENDIDA;
             }
             cont++;
         }
