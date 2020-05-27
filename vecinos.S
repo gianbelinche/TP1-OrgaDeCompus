@@ -39,8 +39,8 @@ vecinos:
     lw $t1, O_A1($fp)
     addiu $t1,$t1,1
 
-    /* v0 = N */
-    lw $v0, O_A4($fp)
+    /* v0 = M */
+    lw $v0, O_A3($fp)
     sltu $v0,$t1,$v0
     bnez $v0,der
     nop
@@ -76,18 +76,19 @@ siguiente:
     /* t2 = vecino_izq_x = x - 1 */
     lw $t2, O_A1($fp)
 
-    /* v0 = N */
-    lw $v0, O_A4($fp)
+    /* v0 = M */
+    lw $v0, O_A3($fp)
     bnez $t2,izq
     nop
-    /* si no se cumple la condicion, vecino_izq_x = N - 1 */
+    /* si no se cumple la condicion, vecino_izq_x = M - 1 */
     addiu $t2,$v0,0
 
 izq:
     addiu $t2,$t2,-1
+    /* v0 = N */
+    lw $v0, O_A4($fp)
     /* v0 = N * vecino_izq_x */
     mul $v0,$t2,$v0
-
     /* $v1 = y */
     lw $v1,O_A2($fp)
     /* $v0 = vecino_izq_x * N + y */
@@ -112,8 +113,8 @@ siguiente2:
     lw $t3, O_A2($fp)
     addiu $t3,$t3,1
 
-    /* $v0 = M */
-    lw $v0, O_A3($fp)
+    /* $v0 = N */
+    lw $v0, O_A4($fp)
     sltu $v0,$t3,$v0
     bnez $v0,abajo
     nop
@@ -147,12 +148,12 @@ siguiente3:
     /* t4 = vecino_arriba_y = y - 1 */
     lw $t4, O_A2($fp)
 
-    /* $v0 = M */
-    lw $v0, O_A3($fp)
+    /* $v0 = N */
+    lw $v0, O_A4($fp)
 
     bnez $t4,arriba
     nop
-    /* si no se cumple la condicion, vecino_arriba_y = M - 1 */
+    /* si no se cumple la condicion, vecino_arriba_y = N - 1 */
     addiu $t4,$v0,0
 
 arriba:
