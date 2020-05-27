@@ -6,7 +6,7 @@
 #include "vecinos.h"
 #define EXITO 0
 #define ERROR -1
-#define ESCALA 10
+#define ESCALA 16
 
 ////////////////Funciones privadas//////////////////////
 
@@ -118,7 +118,7 @@ int life_crear(life_t *self,
         _liberar_tablero(self);
         return ERROR;
     }
-
+    printf("Leyendo estado inicial...\n");
     estado = parseador_archivo_parsear(&entrada, M, N, self->tablero);
     if (estado == ERROR){
         _liberar_tablero(self);     
@@ -148,6 +148,7 @@ int life_comenzar(life_t* self){
         actualizar_matriz(self->tablero, self->M, self->N);
         contador_iteraciones++;
     }
+    printf("Listo\n");
     return estado;
 }
 

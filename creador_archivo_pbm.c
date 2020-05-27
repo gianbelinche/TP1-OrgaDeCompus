@@ -130,7 +130,20 @@ int creador_archivo_pbm_nuevo_archivo(creador_archivo_pbm_t *self, unsigned char
             }
         }
     }    
-
+    //Pongo aca el mensaje para imprimir error en caso de error
+    if (estado == ERROR){
+        fprintf(stdout, 
+                "Error al grabar %s_%d%s\n", 
+                self->prefijo, 
+                self->contador, 
+                EXTENSION_ARCHIVO);
+    }else{
+        fprintf(stdout,  
+                "Grabando %s_%d%s\n", 
+                self->prefijo, 
+                self->contador, 
+                EXTENSION_ARCHIVO);
+    }
     self->contador++;
     fclose(archivo);
     return estado;
