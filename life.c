@@ -10,6 +10,12 @@
 #define ERROR -1
 //Configuracion de creador_archivo_pbm
 #define ESCALA 16
+//Valores graficos
+#define CELDA_PRENDIDA  "#"
+#define CELDA_APAGADA   "."
+#define COLUMNA         " | "
+#define TECHO           "--"
+#define SEPARADOR       " " 
 //Mensajes
 #define MENSAJE_PROCESANDO_NUEVO_ARCHIVO "Leyendo estado inicial...\n"
 #define MENSAJE_OPERACION_COMPLETADA "Listo\n"
@@ -86,6 +92,31 @@ void actualizar_matriz(unsigned char** original, unsigned int M, unsigned int N)
     }
 }
 
+static void _imprimir_tablero(life_t *self){
+    for (int x = 0; x < self->N; x++) printf("%s", TECHO);
+    printf("\n");
+    for (int y = 0; y < self->M; y++){
+        for (int x = 0; x < self->N; x++){
+            if (x == 0){
+                printf("%s", COLUMNA);
+            }
+            if (self->tablero[y][x]){
+                printf("%s", CELDA_PRENDIDA);
+            } else {
+                printf("%s", CELDA_APAGADA);
+            }
+            if (x == self->N-1){
+                printf("%s\n", COLUMNA);
+            } else {
+                printf("%s", SEPARADOR);
+            }
+        }
+    }
+    printf("  ");
+    for (int x = 0; x < self->N; x++) printf("%s", TECHO);
+    printf("\n");
+}
+
 ///////////////////////Funciones publicas////////////////////
 
 
@@ -135,6 +166,9 @@ int life_comenzar(life_t* self){
         estado = creador_archivo_pbm_nuevo_archivo(&self->creador_pbm, self->tablero);
         if (estado == ERROR) break;
         actualizar_matriz(self->tablero, self->M, self->N);
+        _imprimir_tablero(self);
+        printf("Presione 'Enter' para avanzar.");
+        getc(stdin);
         contador_iteraciones++;
     }
     printf(MENSAJE_OPERACION_COMPLETADA);

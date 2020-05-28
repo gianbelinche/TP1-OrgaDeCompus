@@ -2,12 +2,15 @@
 #include <stdlib.h>
 #define ERROR -1
 #define EXITO 0
-#define CANTIDA_DE_PARAMETROS 4
+#define CANTIDAD_DE_PARAMETROS 4
 
 enum POS_ARGUMENTOS {POS_M=1, POS_N, POS_NOMBRE_ARCHIVO};
 int main(int argc, const char**argv){
 
-    if (argc != CANTIDA_DE_PARAMETROS) return ERROR;
+    if (argc != CANTIDAD_DE_PARAMETROS) {
+        return ERROR;
+        fprintf(stderr, "Error: cantidad de parámetros incorrecta");
+    }
     creador_tableros_t creador;
     unsigned int M = atoi(argv[POS_M]);
     unsigned int N = atoi(argv[POS_N]);

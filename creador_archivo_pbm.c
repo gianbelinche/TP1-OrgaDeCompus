@@ -137,6 +137,9 @@ int creador_archivo_pbm_nuevo_archivo(creador_archivo_pbm_t *self, unsigned char
         }
     }    
     //Pongo aca el mensaje para imprimir error en caso de error
+    //Hace algo similar a un clear en la pantalla
+    printf("\e[1;1H\e[2J");
+    printf("  ");
     if (estado == ERROR){
         fprintf(stdout, 
                 "Error al grabar %s_%d%s\n", 

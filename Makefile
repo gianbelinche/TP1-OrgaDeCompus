@@ -7,8 +7,10 @@ MFILES = main.c life.c parseador_archivo.c version_conway_MIPS.c creador_archivo
 HFILES = life.h parseador_archivo.h version_conway_otro.h creador_archivo_pbm.h vecinos.h
 PCFILES = pruebas.c life.c parseador_archivo.c version_conway_c.c creador_archivo_pbm.c vecinos.c
 PMFILES = pruebas.c life.c parseador_archivo.c version_conway_MIPS.c creador_archivo_pbm.c vecinos.S
+TBFILES = creador_tableros_main.c creador_tableros.c
 EXEC_S = conway
 EXEC_P = pruebas
+EXEC_P = tablero
 
 c: $(CFILES)
 	$(CC) $(CFLAGS) -o $(EXEC_S) $(CFILES)
@@ -21,6 +23,9 @@ pruebas-c: $(PCFILES)
 
 pruebas-mips: $(PMFILES)
 	$(CC) $(CFLAGS) -o $(EXEC_P) $(PMFILES)		
+
+tablero: $(TBFILES)
+	$(CC) $(CFLAGS) -o $(EXEC_P) $(TBFILES)
 
 clean:
 	$(RM) *.o $(EXEC_S)
