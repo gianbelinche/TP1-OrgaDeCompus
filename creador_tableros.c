@@ -4,6 +4,9 @@
 //Valores de retorno
 #define EXITO 0
 #define ERROR -1
+//Valores del tablero
+#define TABLERO_CELDA_PRENDIDA  1
+#define TABLERO_CELDA_APAGADA   0
 //Valores graficos
 #define CELDA_PRENDIDA  "#"
 #define CELDA_APAGADA   "."
@@ -66,20 +69,10 @@ static int _inicializar_tablero(creador_tableros_t *self){
     return estado;
 }
 
-static void _imprimir_ayuda(){
-    printf("\n");
-    printf("%c: Imprime ayuda\n", TECLA_AYUDA);
-    printf("%c: Salir de la aplicacion\n", TECLA_ESCAPE);
-    printf("%c: Mover hacia arriba\n", TECLA_ARRIBA);
-    printf("%c: Mover hacia abajo\n", TECLA_ABAJO);
-    printf("%c: Mover hacia la derecha\n", TECLA_DERECHA);
-    printf("%c: Mover hacia la izquierda\n", TECLA_IZQUIERDA);
-    printf("%c: Agregar celda\n", AGREGAR_CELDA);
-    printf("%c: Quitar celda\n", QUITAR_CELDA);
-    printf("\n");
-}
-
-
+/*
+Imprime el estado actual del tablero por pantalla, haciendo un pseudo clear anteriormente.
+No falla.
+*/
 static void _imprimir_tablero(creador_tableros_t *self){
     //Hace algo similar a un clear en la pantalla
     printf("\e[1;1H\e[2J");
@@ -111,26 +104,42 @@ static void _imprimir_tablero(creador_tableros_t *self){
     for (int x = 0; x < self->N; x++) printf("%s", TECHO);
     printf("\n");
 }
-
+/*
+Decide que tipo de impresion debera realizarse dependiendo del
+ultimo comando leido.
+Puede imprimir el tablero o la ayuda.
+No falla.
+*/
 static void _imprimir(creador_tableros_t *self){
     if (self->ultima_op == TECLA_AYUDA){
-        _imprimir_ayuda();
+        imprimir_ayuda();
     }else{
         _imprimir_tablero(self);
     }
 }
-
+/*
+Guarda el estado del tablero en un archivo con un formato especial en donde
+se escribira las coordenadas de cada celda viva del mismo, todas separadas por
+un salto de linea.
+En caso de exito devuelve 0.
+En caso de fallo devuelve -1.
+*/
 static int _escribir_archivo(creador_tableros_t *self){
+    int estado = EXITO;
     for (int y = 0; y < self->M; y++){
         for (int x = 0; x < self->N; x++){
             if (self->tablero[y][x]){
-                fprintf(self->archivo, "%d %d\n", x, y);
+                estado = fprintf(self->archivo, "%d %d\n", x, y);
+                if (estado < 0) return ERROR;
             }
         }
     }
     return EXITO;
 }
-
+/*
+Actualiza la posicion del operador segun corresponda.
+En caso de que la nueva posicion sea invalida se mantendra la posicion anterior.
+*/
 static void _moverse(creador_tableros_t *self, unsigned int nueva_x, unsigned int nueva_y){
     if (nueva_x < 0 || nueva_x >= self->N) return;
     if (nueva_y < 0 || nueva_y >= self->M) return;
@@ -138,7 +147,11 @@ static void _moverse(creador_tableros_t *self, unsigned int nueva_x, unsigned in
     self->op_y = nueva_y;
 }
 
-
+/*
+Parsea el comando ingresado, modificando el tablero de ser necesario.
+Devuelve false si se detecta la tecla de escape.
+Devuelve true en caso contrario.
+*/
 static bool _modificar_tablero(creador_tableros_t *self, const char entrada){
     switch (entrada){
         case TECLA_ESCAPE:
@@ -156,10 +169,10 @@ static bool _modificar_tablero(creador_tableros_t *self, const char entrada){
             _moverse(self, self->op_x-1, self->op_y);
             break;
         case AGREGAR_CELDA:
-            self->tablero[self->op_y][self->op_x] = 1;
+            self->tablero[self->op_y][self->op_x] = TABLERO_CELDA_PRENDIDA;
             break;
         case QUITAR_CELDA:
-            self->tablero[self->op_y][self->op_x] = 0;
+            self->tablero[self->op_y][self->op_x] = TABLERO_CELDA_APAGADA;
             break;
     }
     return true;
@@ -204,6 +217,26 @@ int creador_tableros_comenzar(creador_tableros_t *self){
             i++;
         }
     }
-    return _escribir_archivo(self);
+    printf("Generando archivo de salida...\n");
+    int estado = _escribir_archivo(self);
+    if (estado == ERROR){
+        fprintf(stderr, "Error al generar el archivo de salida.\n");
+        return ERROR;
+    }
+    printf("Archivo de salida generado exitosamente.\n");
+    return EXITO;
 }
 
+void imprimir_ayuda(){
+    printf("\n");
+    printf("Comandos disponibles para el operador\n\n");
+    printf("%c: Imprime ayuda\n", TECLA_AYUDA);
+    printf("%c: Salir de la aplicacion\n", TECLA_ESCAPE);
+    printf("%c: Mover hacia arriba\n", TECLA_ARRIBA);
+    printf("%c: Mover hacia abajo\n", TECLA_ABAJO);
+    printf("%c: Mover hacia la derecha\n", TECLA_DERECHA);
+    printf("%c: Mover hacia la izquierda\n", TECLA_IZQUIERDA);
+    printf("%c: Agregar celda\n", AGREGAR_CELDA);
+    printf("%c: Quitar celda\n", QUITAR_CELDA);
+    printf("\n");
+}

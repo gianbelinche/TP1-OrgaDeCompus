@@ -41,5 +41,10 @@ En caso de exito devuelve 0.
 */
 int creador_tableros_comenzar(creador_tableros_t *self);
 
+/*
+Imprime un mensaje de ayuda por pantalla, con todos los comandos disponibles.
+No falla.
+*/
+void imprimir_ayuda();
 
 #endif
