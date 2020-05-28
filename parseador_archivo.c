@@ -4,7 +4,7 @@
 #include <errno.h>
 #define FORMATO_LECTURA "r"
 #define DELIMITADOR " "
-#define TAM_BUFFER_LINEA 5
+#define TAM_BUFFER_LINEA 32
 #define LARGO_LINEA 3
 #define CELDA_ENCENDIDA 1
 #define EXITO 0
@@ -62,10 +62,14 @@ int parseador_archivo_parsear(parseador_archivo_t *self,
                               const unsigned int M,
                               const unsigned int N,
                               unsigned char** tablero){
-    char linea[TAM_BUFFER_LINEA];
+    char linea[TAM_BUFFER_LINEA] = {0};
     int estado = 0;
+    int i = 0;
     while(fgets(linea, TAM_BUFFER_LINEA, self->archivo) && estado == EXITO){
-        linea[strlen(linea)] = 0;
+        i = strlen(linea);
+        //while (linea[i] != '\0' && linea[i] != '\n') i++;
+        if (i == 0) continue;
+        linea[i] = 0;
         estado = _parsear_linea(linea, M, N, tablero);
     }
 

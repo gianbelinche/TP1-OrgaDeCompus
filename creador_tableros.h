@@ -1,7 +1,9 @@
 #ifndef __CREADOR_TABLEROS__
 #define __CREADOR_TABLEROS__
+#include <stdio.h>
 
 typedef struct creador_tableros{
+    FILE* archivo;
     char** tablero;
     unsigned int M;
     unsigned int N;
@@ -19,7 +21,7 @@ En caso de exito devuelve 0.
 La estructura debera ser destruida llamando a creador_tableros_destruir
 unicamente si esta funcion devuelve 0.
 */
-int creador_tableros_crear(creador_tableros_t *self, char** tablero, unsigned int M, unsigned int N);
+int creador_tableros_crear(creador_tableros_t *self, unsigned int M, unsigned int N, const char* nombre_archivo);
 
 
 

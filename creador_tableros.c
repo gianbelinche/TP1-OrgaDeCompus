@@ -1,5 +1,5 @@
 #include "creador_tableros.h"
-#include "stdio.h"
+#include <stdlib.h>
 #include <stdbool.h>
 //Valores de retorno
 #define EXITO 0
@@ -22,8 +22,49 @@
 #define QUITAR_CELDA    'o'
 //Tamanio de buffer
 #define TAM_BUFFER_ENTRADA 256
+//Opcion archivo
+#define MODO_APERTURA "w"
 
 ////////////////Funciones privadas///////////////////
+
+/*
+Libera el tablero de juego.
+Esta funcion no falla.
+*/
+static void _liberar_tablero(creador_tableros_t *self){
+    int cont = 0;
+    if (self->tablero){
+        while(self->tablero[cont]){
+            free(self->tablero[cont]);
+            self->tablero[cont] = NULL;
+            cont++;
+        }
+        free(self->tablero);
+        self->tablero = NULL;
+    }
+}
+
+/*
+Inicializa el tablero de juego con un tamanio de M*N.
+Cada celda del tablero sera inicializada dinamicamente con el valor 0.
+En caso de fallo devuelve -1.
+En caso de exito devuelve 0.
+*/
+static int _inicializar_tablero(creador_tableros_t *self){
+    int estado = EXITO;
+    self->tablero = calloc(self->M + 1, sizeof(char*));
+    if (!self->tablero) return ERROR;
+
+    for (int y=0; y<self->M; y++){
+        self->tablero[y] = calloc(self->N, sizeof(char));
+        if (!self->tablero[y]){
+            estado = ERROR;
+            break;
+        }
+    }
+    if (estado == ERROR) _liberar_tablero(self);
+    return estado;
+}
 
 static void _imprimir_ayuda(){
     printf("\n");
@@ -79,6 +120,17 @@ static void _imprimir(creador_tableros_t *self){
     }
 }
 
+static int _escribir_archivo(creador_tableros_t *self){
+    for (int y = 0; y < self->M; y++){
+        for (int x = 0; x < self->N; x++){
+            if (self->tablero[y][x]){
+                fprintf(self->archivo, "%d %d\n", x, y);
+            }
+        }
+    }
+    return EXITO;
+}
+
 static void _moverse(creador_tableros_t *self, unsigned int nueva_x, unsigned int nueva_y){
     if (nueva_x < 0 || nueva_x >= self->N) return;
     if (nueva_y < 0 || nueva_y >= self->M) return;
@@ -116,15 +168,20 @@ static bool _modificar_tablero(creador_tableros_t *self, const char entrada){
 ////////////////Funciones publicas///////////////////
 
 
-int creador_tableros_crear(creador_tableros_t *self, char** tablero, unsigned int M, unsigned int N){
-    if (tablero == NULL) return ERROR;
-    self->tablero = tablero;
+int creador_tableros_crear(creador_tableros_t *self, unsigned int M, unsigned int N, const char* nombre_archivo){
     self->M = M;
     self->N = N;
     self->op_x = N/2;
     self->op_y = M/2;
     self->ultima_op = 0;
-    return EXITO;
+    int estado = _inicializar_tablero(self);
+    if (estado == ERROR) _liberar_tablero(self);
+    self->archivo = fopen(nombre_archivo, MODO_APERTURA);
+    if (!self->archivo){
+        _liberar_tablero(self);
+        return ERROR;
+    }
+    return estado;
 }   
 
 
@@ -147,5 +204,6 @@ int creador_tableros_comenzar(creador_tableros_t *self){
             i++;
         }
     }
+    return _escribir_archivo(self);
 }
 

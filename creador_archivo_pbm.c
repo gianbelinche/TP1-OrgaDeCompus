@@ -29,9 +29,9 @@ static void _crear_linea(creador_archivo_pbm_t *self, unsigned char **tablero, c
     for (int x=0; x<self->N; x++){
         for (int k=0; k<self->escala; k++){
             if (tablero[y][x]){
-                self->linea[cont] = APAGADA;
-            }else{
                 self->linea[cont] = PRENDIDA;
+            }else{
+                self->linea[cont] = APAGADA;
             }
             cont++;
         }
